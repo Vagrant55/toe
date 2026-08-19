@@ -600,5 +600,22 @@
 
 </ol>
 </div>
+
+<script>
+// Все PDF открываются во встроенном просмотрщике с переходом на нужную страницу
+document.addEventListener('DOMContentLoaded', function () {
+  var viewer = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=';
+  document.querySelectorAll('a[href*=".pdf"]').forEach(function (a) {
+    var full  = a.href;              // абсолютный адрес PDF
+    var parts = full.split('#');     // отделяем #page=N
+    var base  = parts[0];
+    var page  = parts[1] ? '#' + parts[1] : '';
+    a.href = viewer + encodeURIComponent(base) + page;
+    a.target = '_blank';
+  });
+});
+</script>
+
+    
 </body>
 </html>
