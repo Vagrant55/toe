@@ -600,52 +600,5 @@
 
 </ol>
 </div>
-
-
-<script>
-(function () {
-  var VIEWER = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=';
-
-  function toViewer(url) {
-    var parts = url.split('#');
-    return VIEWER + encodeURIComponent(parts[0]) + (parts[1] ? '#' + parts[1] : '');
-  }
-
-  // 1) Переписываем все ссылки на PDF
-  function fix() {
-    var links = document.querySelectorAll('a[href*=".pdf"]');
-    for (var i = 0; i < links.length; i++) {
-      var a = links[i];
-      if (a.dataset.fixed) continue;
-      a.dataset.fixed = '1';
-      a.href = toViewer(a.href);
-      a.target = '_blank';
-    }
-  }
-
-  // 2) Страховка: перехватываем клик, если ссылка не переписалась
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest ? e.target.closest('a[href*=".pdf"]') : null;
-    if (!a || a.dataset.fixed) return;
-    e.preventDefault();
-    window.open(toViewer(a.href), '_blank');
-  }, true);
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fix);
-  } else { fix(); }
-
-  // 3) Индикатор, что скрипт работает (потом можно удалить)
-  window.addEventListener('load', function () {
-    var d = document.createElement('div');
-    d.style.cssText = 'position:fixed;right:8px;bottom:8px;background:#1a237e;color:#fff;font:11px sans-serif;padding:4px 8px;border-radius:4px;z-index:99999;opacity:.85';
-    d.textContent = 'PDF-просмотр подключён';
-    document.body.appendChild(d);
-  });
-})();
-</script>
-
-
-    
 </body>
 </html>
